@@ -10,7 +10,6 @@ import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 
@@ -35,9 +34,10 @@ public class KeyBindEvent extends EventJS {
         private KeyBindBuilder(String customName) {
             HashMapKey = customName;
         }
-        public void addModifier(KeyModifier keyModifier){
+        public KeyBindBuilder addModifier(KeyModifier keyModifier){
             keyMappings.get(HashMapKey).keyModifierDefault = keyModifier;
             keyMappings.get(HashMapKey).keyModifier = keyModifier;
+            return this;
         }
         public KeyMapping getBuildKeyMapping() {
             return keyMappings.get(HashMapKey);

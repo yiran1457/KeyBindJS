@@ -29,15 +29,18 @@ public class KeyBindEvent extends EventJS {
         return new KeyBindBuilder(customName);
     }
 
-    @HideFromJS
+
     public static class KeyBindBuilder {
-        private String HashMapKey;
+        private final String HashMapKey;
         private KeyBindBuilder(String customName) {
             HashMapKey = customName;
         }
-        public void addModifier(KeyModifier keyModifier) throws NoSuchFieldException, IllegalAccessException {
+        public void addModifier(KeyModifier keyModifier){
             keyMappings.get(HashMapKey).keyModifierDefault = keyModifier;
             keyMappings.get(HashMapKey).keyModifier = keyModifier;
+        }
+        public KeyMapping getBuildKeyMapping() {
+            return keyMappings.get(HashMapKey);
         }
     }
 

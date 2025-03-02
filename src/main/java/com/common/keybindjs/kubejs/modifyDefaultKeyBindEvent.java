@@ -19,6 +19,7 @@ public class modifyDefaultKeyBindEvent extends EventJS {
 
     private static final HashMap<String,Integer> modifyListKey = new HashMap<>();
     private static final HashMap<String, KeyModifier> modifyListModifier = new HashMap<>();
+    private static final HashMap<String, String> modifyListCategory = new HashMap<>();
 
     public modifyDefaultKeyBindEvent() {
 
@@ -29,6 +30,9 @@ public class modifyDefaultKeyBindEvent extends EventJS {
     }
     public void modifyModifier(String keyBindName,KeyModifier keyModifier) {
         modifyListModifier.put(keyBindName,keyModifier);
+    }
+    public void modifyCategory(String keyBindName,String category) {
+        modifyListCategory.put(keyBindName,category);
     }
 
     @SubscribeEvent
@@ -42,7 +46,9 @@ public class modifyDefaultKeyBindEvent extends EventJS {
                 keyMapping.keyModifierDefault = modifyListModifier.get(keyMapping.getName());
                 keyMapping.keyModifier = keyMapping.keyModifierDefault;
             }
-
+            if(modifyListCategory.containsKey(keyMapping.getName())) {
+                keyMapping.category = modifyListCategory.get(keyMapping.getName());
+            }
         }
     }
 }

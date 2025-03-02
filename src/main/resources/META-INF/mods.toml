@@ -3,7 +3,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[41,)"
 license="LGPL-3.0-or-later"
 [[mods]] #mandatory
-modId="keybindjs" #mandatory
+modId="${mod_id}" #mandatory
 version="2001-1.0" #mandatory
 displayName="KeyBindJS" #mandatory
 authors="_yi_ran_" #optional

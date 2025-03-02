@@ -10,4 +10,5 @@ public interface KeyBindEvents {
     EventHandler KEY_MODIFY = GROUP.startup("modifyDefaultKey",()->modifyDefaultKeyBindEvent.class);
     EventHandler KEY_REMOVE = GROUP.startup("remove",()-> KeyBindRemoveEvent.class);
     EventHandler KEY_PRESS = GROUP.client("keyPress",()->KeyPressedEvent.class).extra(Extra.STRING);
+    EventHandler KEY_PRESS_GUI = GROUP.client("keyPressInGui",()->KeyPressInGuiEvent.class).extra(Extra.STRING);
 }

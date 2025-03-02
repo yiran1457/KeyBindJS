@@ -1,0 +1,22 @@
+
+modLoader="javafml" #mandatory
+loaderVersion="[41,)"
+license="LGPL-3.0-or-later"
+[[mods]] #mandatory
+modId="keybindjs" #mandatory
+version="2001-1.0" #mandatory
+displayName="KeyBindJS" #mandatory
+authors="_yi_ran_" #optional
+description='''I like this'''
+[[dependencies.keybindjs]] #optional
+    modId="forge"
+    mandatory=true
+    versionRange="[46,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.keybindjs]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20,1.21)"
+    ordering="NONE"
+    side="BOTH"

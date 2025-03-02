@@ -4,17 +4,17 @@ loaderVersion="[41,)"
 license="LGPL-3.0-or-later"
 [[mods]] #mandatory
 modId="${mod_id}" #mandatory
-version="2001-1.0" #mandatory
-displayName="KeyBindJS" #mandatory
-authors="_yi_ran_" #optional
-description='''I like this'''
-[[dependencies.keybindjs]] #optional
+version="${mod_version}" #mandatory
+displayName="${mod_name}" #mandatory
+authors="${mod_authors}" #optional
+description='''${mod_description}'''
+[[dependencies.${mod_id}] #optional
     modId="forge"
     mandatory=true
     versionRange="[46,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.keybindjs]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20,1.21)"

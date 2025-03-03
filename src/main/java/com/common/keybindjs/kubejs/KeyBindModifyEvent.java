@@ -46,6 +46,7 @@ public class KeyBindModifyEvent extends EventJS {
 
     @SubscribeEvent
     public static void onClientStartup(final FMLClientSetupEvent event){
+        HashSet<String> CATEGORYSET = new HashSet<>();
         KeyBindEvents.KEY_MODIFY.post(new KeyBindModifyEvent());
         ArrayList<KeyMapping> NewMappings = new ArrayList<>();
         for (KeyMapping keyMapping : Minecraft.getInstance().options.keyMappings) {
@@ -63,7 +64,10 @@ public class KeyBindModifyEvent extends EventJS {
                 keyMapping.setKey(InputConstants.Type.KEYSYM.getOrCreate(-1));
             } else {
                 KEY_NAME = KEY_NAME + keyMapping.getName() + ",";
-                CATEGORY_NAME = CATEGORY_NAME + keyMapping.getCategory()+ ",";
+                if(!CATEGORYSET.contains(keyMapping.getCategory())) {
+                    CATEGORYSET.add(keyMapping.getCategory());
+                    CATEGORY_NAME = CATEGORY_NAME + keyMapping.getCategory()+ ",";
+                }
                 NewMappings.add(keyMapping);
             }
         }

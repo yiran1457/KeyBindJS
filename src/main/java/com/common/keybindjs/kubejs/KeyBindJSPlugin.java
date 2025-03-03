@@ -12,7 +12,7 @@ public class KeyBindJSPlugin extends KubeJSPlugin {
     }
     @Override
     public void registerBindings(BindingsEvent event) {
-        event.add("KeyBindUtil", KeyBindUtil.class);
+        event.add("KeyBindUtil", KeyBindUtil.INSTANCE);
         event.add("GLFW", GLFW.class);
         event.add("KeyModifier", KeyModifier.class);
     }

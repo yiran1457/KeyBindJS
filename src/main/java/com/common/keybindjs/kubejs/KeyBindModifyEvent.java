@@ -105,7 +105,6 @@ public class KeyBindModifyEvent extends EventJS {
                     "    }\n" +
                     "}\n"
             );
-            ConsoleJS.STARTUP.log("文件已成功生成，路径为：" + file.getAbsolutePath());
         } catch ( IOException e) {
             ConsoleJS.STARTUP.warn("文件写入失败：" + e.getMessage());
         }

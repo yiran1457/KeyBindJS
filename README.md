@@ -10,7 +10,7 @@ KeyBindEvents.modify(event => {
 ```
 Note: Do NOT install this mod on servers.
 
-==============================================
+==============================================<br>
 以下是将默认配件菜单键更改为 ALT+X（移至原版的 Misc 类别下）并删除跳转键绑定的示例：
 ```js
 KeyBindEvents.modify(event => {

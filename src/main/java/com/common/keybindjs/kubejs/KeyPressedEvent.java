@@ -20,7 +20,7 @@ public class KeyPressedEvent extends ClientEventJS {
     @SubscribeEvent
     @HideFromJS
     public static void keyPressed(TickEvent.ClientTickEvent event) {
-        KeyBindEvent.keyMappings.forEach((k, v)->{
+        KeyBindModifyEvent.keyMappingListener.forEach((k, v)->{
             if(v.consumeClick())
                 KeyBindEvents.KEY_PRESS.post(new KeyPressedEvent(k),k);
         });

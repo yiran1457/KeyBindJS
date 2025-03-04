@@ -13,32 +13,35 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.HashMap;
 
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT,bus = Mod.EventBusSubscriber.Bus.MOD,modid = KeyBindJS.MODID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = KeyBindJS.MODID)
 public class KeyBindEvent extends EventJS {
 
     @HideFromJS
-    public static HashMap<String,KeyMapping> keyMappings = new HashMap<>();
+    public static HashMap<String, KeyMapping> keyMappings = new HashMap<>();
 
     @HideFromJS
     public KeyBindEvent() {
     }
 
     public KeyBindBuilder create(String customName, String keyNameKey, int keyCode, String keyGroupKey) {
-        keyMappings.put(customName,new KeyMapping(keyNameKey,keyCode,keyGroupKey));
+        keyMappings.put(customName, new KeyMapping(keyNameKey, keyCode, keyGroupKey));
         return new KeyBindBuilder(customName);
     }
 
 
     public static class KeyBindBuilder {
         private final String HashMapKey;
+
         private KeyBindBuilder(String customName) {
             HashMapKey = customName;
         }
-        public KeyBindBuilder addModifier(KeyModifier keyModifier){
+
+        public KeyBindBuilder addModifier(KeyModifier keyModifier) {
             keyMappings.get(HashMapKey).keyModifierDefault = keyModifier;
             keyMappings.get(HashMapKey).keyModifier = keyModifier;
             return this;
         }
+
         public KeyMapping getBuildKeyMapping() {
             return keyMappings.get(HashMapKey);
         }

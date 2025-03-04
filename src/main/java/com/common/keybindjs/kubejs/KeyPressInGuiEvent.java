@@ -21,7 +21,7 @@ public class KeyPressInGuiEvent extends EventJS {
     @SubscribeEvent
     @HideFromJS
     public static void keyPressed(ScreenEvent.KeyPressed.Pre event) {
-        KeyBindEvent.keyMappings.forEach((k, v)->{
+        KeyBindModifyEvent.keyMappingListener.forEach((k, v)->{
             if(isDown(event,v))
                 KeyBindEvents.KEY_PRESS_GUI.post(new KeyPressInGuiEvent(k),k);
         });

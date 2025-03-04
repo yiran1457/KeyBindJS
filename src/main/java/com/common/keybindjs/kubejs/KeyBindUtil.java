@@ -13,7 +13,7 @@ public class KeyBindUtil {
     public static KeyBindUtil INSTANCE = Lazy.of(KeyBindUtil::new).get();
 
     public KeyMapping[] getAllKeyMappings() {
-        return Minecraft.getInstance().options.keyMappings;
+        return Lazy.of(()->Minecraft.getInstance().options.keyMappings).get();
     }
     public String[] getAllKeyName() {
         return Arrays.stream(getAllKeyMappings()).map(keyMapping-> Component.translatable(keyMapping.getName()).getString()+" : "+keyMapping.getName()).toArray(String[]::new);
@@ -28,6 +28,9 @@ public class KeyBindUtil {
     }
     public KeyMapping getKeyMapping (String customName) {
         return KeyBindEvent.keyMappings.get(customName);
+    }
+    public KeyMapping findKeyMappingInAllKeyMapping (String keyName) {
+        return KeyMapping.ALL.get(keyName);
     }
 
     private boolean isDown (KeyMapping Mapping) {

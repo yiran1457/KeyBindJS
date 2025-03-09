@@ -84,7 +84,7 @@ KeyBindEvents.modify(event=>{
     event.remove('key.spectatorOutlines') //高亮玩家（旁观者）
     event.remove('key.socialInteractions') //社交屏幕
 })
-```js
+```
 
 还提供了KeyBindUtil,里面有一些小功能
 ```js

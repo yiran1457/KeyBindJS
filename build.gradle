@@ -51,13 +51,13 @@ minecraft {
     // By default, the folder name of a run configuration is the name of the Gradle project containing it.
     // generateRunFolders = true
 
-// 此属性用于在开发中启用访问转换器（Access Transformers）
-// 它们将被应用于Minecraft工件（artifact）
-// 访问转换器文件可放置在项目中的任意位置
-// 但最终mod的jar包中必须将其置于"META-INF/accesstransformer.cfg"路径下，才能被Forge加载
-// 这个默认位置是最佳实践，可确保文件在最终jar中自动放置到正确位置
-// 更多信息请参阅：https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/
-accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // 此属性用于在开发中启用访问转换器（Access Transformers）
+    // 它们将被应用于Minecraft工件（artifact）
+    // 访问转换器文件可放置在项目中的任意位置
+    // 但最终mod的jar包中必须将其置于"META-INF/accesstransformer.cfg"路径下，才能被Forge加载
+    // 这个默认位置是最佳实践，可确保文件在最终jar中自动放置到正确位置
+    // 更多信息请参阅：https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.

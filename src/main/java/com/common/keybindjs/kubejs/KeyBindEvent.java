@@ -1,7 +1,7 @@
 package com.common.keybindjs.kubejs;
 
 import com.common.keybindjs.KeyBindJS;
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.client.ClientInitEventJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = KeyBindJS.MODID)
-public class KeyBindEvent extends EventJS {
+public class KeyBindEvent extends ClientInitEventJS {
 
     @HideFromJS
     public static HashMap<String, KeyMapping> keyMappings = new HashMap<>();

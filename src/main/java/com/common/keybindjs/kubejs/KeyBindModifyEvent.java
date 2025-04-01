@@ -3,8 +3,9 @@ package com.common.keybindjs.kubejs;
 import com.common.keybindjs.KeyBindJS;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.platform.Platform;
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.client.ClientInitEventJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -24,19 +25,24 @@ import java.util.HashSet;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = KeyBindJS.MODID)
-public class KeyBindModifyEvent extends EventJS {
+public class KeyBindModifyEvent extends ClientInitEventJS {
 
     private static HashSet<String> removeList = new HashSet<>();
     private static HashMap<String, Integer> modifyListKey = new HashMap<>();
     private static HashMap<String, KeyModifier> modifyListModifier = new HashMap<>();
     private static HashMap<String, String> modifyListCategory = new HashMap<>();
     public static HashMap<String, KeyMapping> keyMappingListener = new HashMap<>();
+    public static HashSet<String> keyMappingHideList = new HashSet<>();
 
     public KeyBindModifyEvent() {
 
     }
 
-    public void addListener(String cusTomName,String keyName) {
+    public void addHideKey(String keyBindName) {
+        keyMappingHideList.add(keyBindName);
+    }
+
+    public void addListener(String cusTomName, String keyName) {
         keyMappingListener.put(cusTomName, KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyName));
     }
 
@@ -57,6 +63,7 @@ public class KeyBindModifyEvent extends EventJS {
     }
 
     @SubscribeEvent
+    @HideFromJS
     public static void onClientStartup(final FMLClientSetupEvent event) {
         KeyBindEvents.KEY_MODIFY.post(new KeyBindModifyEvent());
 
@@ -64,9 +71,11 @@ public class KeyBindModifyEvent extends EventJS {
         keyMappingListener.putAll(KeyBindEvent.keyMappings);
         ArrayList<KeyMapping> NewMappings = new ArrayList<>();
         for (KeyMapping keyMapping : Minecraft.getInstance().options.keyMappings) {
+
             if (modifyListKey.containsKey(keyMapping.getName())) {
                 keyMapping.defaultKey = InputConstants.Type.KEYSYM.getOrCreate(modifyListKey.get(keyMapping.getName()));
             }
+
             if (modifyListModifier.containsKey(keyMapping.getName())) {
                 keyMapping.keyModifierDefault = modifyListModifier.get(keyMapping.getName());
                 keyMapping.keyModifier = keyMapping.keyModifierDefault;
@@ -74,9 +83,10 @@ public class KeyBindModifyEvent extends EventJS {
             if (modifyListCategory.containsKey(keyMapping.getName())) {
                 keyMapping.category = modifyListCategory.get(keyMapping.getName());
             }
+
             if (removeList.contains(keyMapping.getName())) {
                 keyMapping.setKey(InputConstants.Type.KEYSYM.getOrCreate(-1));
-            } else {
+            } else if (!keyMappingHideList.contains(keyMapping.getName())) {
                 KEY_NAME = KEY_NAME + keyMapping.getName() + ",";
                 if (!CATEGORYSET.contains(keyMapping.getCategory())) {
                     CATEGORYSET.add(keyMapping.getCategory());

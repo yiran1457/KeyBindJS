@@ -10,54 +10,44 @@ import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.HashMap;
-
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = KeyBindJS.MODID)
 public class KeyBindEvent extends ClientInitEventJS {
-
-    @HideFromJS
-    public static HashMap<String, KeyMapping> keyMappings = new HashMap<>();
 
     @HideFromJS
     public KeyBindEvent() {
     }
 
     public KeyBindBuilder create(String customName, String keyNameKey, int keyCode, String keyGroupKey) {
-        keyMappings.put(customName, new KeyMapping(keyNameKey, keyCode, keyGroupKey));
-        return new KeyBindBuilder(customName);
+        KeyMapping keyMapping = new KeyMapping(keyNameKey, keyCode, keyGroupKey);
+        AllKeyBindJSList.RegisterKeyMappings.put(customName, keyMapping);
+        return new KeyBindBuilder(keyMapping);
     }
 
 
     public static class KeyBindBuilder {
-        private final String HashMapKey;
+        private KeyMapping keyMapping;
 
-        private KeyBindBuilder(String customName) {
-            HashMapKey = customName;
+        private KeyBindBuilder(KeyMapping keyMapping) {
+            this.keyMapping = keyMapping;
         }
 
         public KeyBindBuilder addModifier(KeyModifier keyModifier) {
-            keyMappings.get(HashMapKey).keyModifierDefault = keyModifier;
-            keyMappings.get(HashMapKey).keyModifier = keyModifier;
+            keyMapping.keyModifierDefault = keyModifier;
+            keyMapping.keyModifier = keyModifier;
             return this;
         }
 
         public KeyMapping getBuildKeyMapping() {
-            return keyMappings.get(HashMapKey);
+            return keyMapping;
         }
     }
-
-    @HideFromJS
-    public HashMap<String, KeyMapping> getKeyMappings() {
-        return keyMappings;
-    }
-
 
     @SubscribeEvent
     @HideFromJS
     public static void registerKeys(final RegisterKeyMappingsEvent event) {
         KeyBindEvents.KEY_BINDING.post(new KeyBindEvent());
-        KeyBindEvent.keyMappings.values().forEach(event::register);
+        AllKeyBindJSList.RegisterKeyMappings.values().forEach(event::register);
     }
 
 }

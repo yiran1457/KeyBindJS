@@ -4,6 +4,7 @@ import com.common.keybindjs.KeyBindJS;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.client.ClientInitEventJS;
+import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.KeyMapping;
@@ -20,46 +21,45 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = KeyBindJS.MODID)
 public class KeyBindModifyEvent extends ClientInitEventJS {
-
-    private static HashSet<String> removeList = new HashSet<>();
-    private static HashMap<String, Integer> modifyListKey = new HashMap<>();
-    private static HashMap<String, KeyModifier> modifyListModifier = new HashMap<>();
-    private static HashMap<String, String> modifyListCategory = new HashMap<>();
-    public static HashMap<String, KeyMapping> keyMappingListener = new HashMap<>();
-    public static HashSet<String> keyMappingHideList = new HashSet<>();
-
     public KeyBindModifyEvent() {
 
     }
 
+    @Info("隐藏按键，隐藏后将只使用默认按键而不读取options文件")
     public void addHideKey(String keyBindName) {
-        keyMappingHideList.add(keyBindName);
+        AllKeyBindJSList.HideKeySet.add(keyBindName);
     }
 
-    public void addListener(String cusTomName, String keyName) {
-        keyMappingListener.put(cusTomName, KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyName));
+    @Info("给已有按键添加customName用于监听")
+    public void addListener(String customName, String keyName) {
+        AllKeyBindJSList.RegisterKeyMappings.put(customName, KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyName));
     }
 
+    @Info("修改按键的默认按键")
     public void modifyKey(String keyBindName, int keyCode) {
-        modifyListKey.put(keyBindName, keyCode);
+        KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyBindName).defaultKey = InputConstants.Type.KEYSYM.getOrCreate(keyCode);
     }
 
+    @Info("修改按键的默认修饰键")
     public void modifyModifier(String keyBindName, KeyModifier keyModifier) {
-        modifyListModifier.put(keyBindName, keyModifier);
+        KeyMapping keyMapping = KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyBindName);
+        keyMapping.keyModifierDefault = keyModifier;
+        keyMapping.keyModifier = keyModifier;
     }
 
+    @Info("修改按键的分组")
     public void modifyCategory(String keyBindName, String category) {
-        modifyListCategory.put(keyBindName, category);
+        KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping(keyBindName).category = category;
     }
 
+    @Info("移除按键绑定")
     public void remove(String keyBindName) {
-        removeList.add(keyBindName);
+        AllKeyBindJSList.RemoveKeySet.add(keyBindName);
     }
 
     @SubscribeEvent
@@ -67,35 +67,32 @@ public class KeyBindModifyEvent extends ClientInitEventJS {
     public static void onClientStartup(final FMLClientSetupEvent event) {
         KeyBindEvents.KEY_MODIFY.post(new KeyBindModifyEvent());
 
+        //已经添加的按键组的set
         HashSet<String> CATEGORYSET = new HashSet<>();
-        keyMappingListener.putAll(KeyBindEvent.keyMappings);
+
+        //修改后的按键
         ArrayList<KeyMapping> NewMappings = new ArrayList<>();
+
         for (KeyMapping keyMapping : Minecraft.getInstance().options.keyMappings) {
 
-            if (modifyListKey.containsKey(keyMapping.getName())) {
-                keyMapping.defaultKey = InputConstants.Type.KEYSYM.getOrCreate(modifyListKey.get(keyMapping.getName()));
-            }
-
-            if (modifyListModifier.containsKey(keyMapping.getName())) {
-                keyMapping.keyModifierDefault = modifyListModifier.get(keyMapping.getName());
-                keyMapping.keyModifier = keyMapping.keyModifierDefault;
-            }
-            if (modifyListCategory.containsKey(keyMapping.getName())) {
-                keyMapping.category = modifyListCategory.get(keyMapping.getName());
-            }
-
-            if (removeList.contains(keyMapping.getName())) {
+            if (AllKeyBindJSList.RemoveKeySet.contains(keyMapping.getName())) {
+                //隐藏并把按键修改为未指定
                 keyMapping.setKey(InputConstants.Type.KEYSYM.getOrCreate(-1));
-            } else if (!keyMappingHideList.contains(keyMapping.getName())) {
+            } else if (!AllKeyBindJSList.HideKeySet.contains(keyMapping.getName())) {
+                //将按键添加入vsc提示文件
                 KEY_NAME = KEY_NAME + keyMapping.getName() + ",";
                 if (!CATEGORYSET.contains(keyMapping.getCategory())) {
                     CATEGORYSET.add(keyMapping.getCategory());
+                    //将按键组添加入vsc提示文件
                     CATEGORY_NAME = CATEGORY_NAME + keyMapping.getCategory() + ",";
                 }
                 NewMappings.add(keyMapping);
             }
         }
+        //应用修改后的keymapping
         Minecraft.getInstance().options.keyMappings = NewMappings.toArray(new KeyMapping[0]);
+
+        //生成vsc提示文件
         KEY_NAME = KEY_NAME.substring(0, KEY_NAME.length() - 1);
         CATEGORY_NAME = CATEGORY_NAME.substring(0, CATEGORY_NAME.length() - 1);
         File folder = VSCODE_PATH.toFile();

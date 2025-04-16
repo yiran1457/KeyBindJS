@@ -9,10 +9,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class KeyBindUtil {
-    private KeyBindUtil() {
-    }
-
-    public static KeyBindUtil INSTANCE = Lazy.of(KeyBindUtil::new).get();
+    public static KeyBindUtil INSTANCE = new KeyBindUtil();
 
     public KeyMapping[] getAllKeyMappings() {
         return Lazy.of(() -> Minecraft.getInstance().options.keyMappings).get();
@@ -33,7 +30,7 @@ public class KeyBindUtil {
     }
 
     public KeyMapping getKeyMapping(String customName) {
-        return KeyBindEvent.keyMappings.get(customName);
+        return AllKeyBindJSList.RegisterKeyMappings.get(customName);
     }
 
     public KeyMapping findKeyMappingInAllKeyMapping(String keyName) {

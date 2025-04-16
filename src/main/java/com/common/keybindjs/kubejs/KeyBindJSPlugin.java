@@ -1,6 +1,5 @@
 package com.common.keybindjs.kubejs;
 
-import com.common.keybindjs.kubejs.extra.JSIO;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,6 +19,5 @@ public class KeyBindJSPlugin extends KubeJSPlugin {
             event.add("GLFW", GLFW.class);
             event.add("KeyModifier", KeyModifier.class);
         });
-        event.add("JSIO", JSIO.INSTANCE);
     }
 }

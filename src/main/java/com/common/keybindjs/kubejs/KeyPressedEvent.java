@@ -1,7 +1,11 @@
 package com.common.keybindjs.kubejs;
 
 import com.common.keybindjs.KeyBindJS;
+import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import dev.latvian.mods.kubejs.client.ClientEventJS;
+import dev.latvian.mods.kubejs.event.EventHandler;
+import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -14,11 +18,10 @@ import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = KeyBindJS.MODID)
 public class KeyPressedEvent extends ClientEventJS {
-
-    private String customName;
 
     public static HashMap<Integer, KeyModifier> getModifyerMap() {
         return Lazy.of(() -> {
@@ -31,42 +34,37 @@ public class KeyPressedEvent extends ClientEventJS {
         }).get();
     }
 
-    public KeyPressedEvent(String customName) {
-        this.customName = customName;
+    public KeyPressedEvent() {
     }
 
     @SubscribeEvent
     @HideFromJS
     public static void onKeyPress(InputEvent.Key event) {
-        KeyBindModifyEvent.keyMappingListener.forEach((k, v) -> {
-            if (isDown(event, v)) {
-                if (Minecraft.getInstance().screen == null) {
-                    if (event.getAction() == 1)
-                        KeyBindEvents.FIRST_KEY_PRESS.post(new KeyPressedEvent(k), k);
-                    if (event.getAction() == 0)
-                        KeyBindEvents.KEY_RELEASE.post(new KeyPressedEvent(k), k);
-                    if (event.getAction() != 0)
-                        KeyBindEvents.KEY_PRESS.post(new KeyPressedEvent(k), k);
-                } else {
-                    if (event.getAction() == 1)
-                        KeyBindEvents.FIRST_KEY_PRESS_GUI.post(new KeyPressedEvent(k), k);
-                    if (event.getAction() == GLFW.GLFW_RELEASE)
-                        KeyBindEvents.KEY_RELEASE_GUI.post(new KeyPressedEvent(k), k);
-                    if (event.getAction() != 0)
-                        KeyBindEvents.KEY_PRESS_GUI.post(new KeyPressedEvent(k), k);
-                }
+
+        if (Minecraft.getInstance().screen == null) {
+            switch (event.getAction()) {
+                case 1 -> post(KeyBindEvents.FIRST_KEY_PRESS,event);
+                case 0 -> post(KeyBindEvents.KEY_RELEASE,event);
+                case 2 -> post(KeyBindEvents.KEY_PRESS,event);
+            }
+        } else {
+            switch (event.getAction()) {
+                case 1 -> post(KeyBindEvents.FIRST_KEY_PRESS_GUI,event);
+                case 0 -> post(KeyBindEvents.KEY_RELEASE_GUI,event);
+                case 2 -> post(KeyBindEvents.KEY_PRESS_GUI,event);
+            }
+        }
+    }
+
+    private static void post(EventHandler JSEvent,InputEvent.Key event) {
+        JSEvent.findUniqueExtraIds(ScriptType.CLIENT).forEach(key -> {
+            if (isDown(event, AllKeyBindJSList.RegisterKeyMappings.getOrDefault(key, KeyBindUtil.INSTANCE.findKeyMappingInAllKeyMapping((String) key)))) {
+                JSEvent.post(new KeyPressedEvent(), key);
             }
         });
     }
 
     private static Boolean isDown(InputEvent.Key event, KeyMapping keyMapping) {
         return keyMapping.getKey().getValue() == event.getKey() && getModifyerMap().get(event.getModifiers()) == keyMapping.getKeyModifier();
-
-
-    }
-
-
-    public String getCustomName() {
-        return customName;
     }
 }

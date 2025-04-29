@@ -16,6 +16,7 @@ public class KeyBindJSPlugin implements KubeJSPlugin {
     @Override
     public void registerBindings(BindingRegistry bindings) {
         if(FMLEnvironment.dist.isClient()){
+            bindings.add("KeyBindUtil", KeyBindUtil.INSTANCE);
             bindings.add("GLFW", GLFW.class);
             bindings.add("KeyModifier", KeyModifier.class);
         }

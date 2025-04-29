@@ -1,5 +1,7 @@
 package com.common.keybindjs.kubejs;
 
+import com.common.keybindjs.oi.KubeJSDebugScreen;
+import dev.latvian.mods.kubejs.typings.Info;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -36,6 +38,10 @@ public class KeyBindUtil {
         return KeyMapping.ALL.get(keyName);
     }
 
+    @Info("请在事件里面使用，在外面使用可能出现问题，此screen仅为方便使用指令来调试kjs")
+    public void openKubeJSDebugScreen() {
+        Minecraft.getInstance().setScreen(new KubeJSDebugScreen());
+    }
     private boolean isDown(KeyMapping Mapping) {
         return Mapping.isDown();
     }

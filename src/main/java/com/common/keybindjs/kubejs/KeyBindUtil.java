@@ -27,14 +27,18 @@ public class KeyBindUtil {
         ).collect(Collectors.toSet()).toArray(String[]::new);
     }
 
-    public boolean isDown(String customName) {
+    /*public boolean isDown(String customName) {
         return isDown(getKeyMapping(customName));
-    }
+    }*/
 
+    @Deprecated
     public KeyMapping getKeyMapping(String customName) {
         return AllKeyBindJSList.RegisterKeyMappings.get(customName);
     }
 
+    public KeyMapping ToKeyMapping(KeyMapping keyMapping) {return keyMapping;}
+
+    @Deprecated
     public KeyMapping findKeyMappingInAllKeyMapping(String keyName) {
         return KeyMapping.ALL.get(keyName);
     }
@@ -44,7 +48,7 @@ public class KeyBindUtil {
         Minecraft.getInstance().setScreen(new KubeJSDebugScreen());
     }
 
-    private boolean isDown(KeyMapping Mapping) {
+    public boolean isDown(KeyMapping Mapping) {
         return Mapping.isDown();
     }
 

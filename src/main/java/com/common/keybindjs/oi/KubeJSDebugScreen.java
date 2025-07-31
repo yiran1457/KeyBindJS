@@ -1,5 +1,6 @@
 package com.common.keybindjs.oi;
 
+import dev.latvian.mods.kubejs.KubeJS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -18,9 +19,10 @@ public class KubeJSDebugScreen extends Screen {
 
         addWidgetWithSize(CW + 55, CH - 88, 88, 20, "reload", (button) -> mc.player.connection.sendCommand("reload"));
         addWidgetWithSize(CW - 55, CH - 88, 88, 20, "kjs reload server", (button) -> mc.player.connection.sendCommand("kjs reload server_scripts"));
-        addWidgetWithSize(CW + 55, CH - 60, 88, 20, "kjs reload client", (button) -> mc.player.connection.sendCommand("kjs reload client_scripts"));
+        addWidgetWithSize(CW + 55, CH - 60, 88, 20, "kjs reload client", (button) -> KubeJS.getClientScriptManager().reload(Minecraft.getInstance().getResourceManager()));
         addWidgetWithSize(CW - 55, CH - 60, 88, 20, "kjs reload startup", (button) -> mc.player.connection.sendCommand("kjs reload startup_scripts"));
         addWidgetWithSize(CW, CH - 32, 110 + 88, 20, "probejs dump", (button) -> mc.player.connection.sendCommand("probejs dump"));
+
 
     }
 

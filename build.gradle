@@ -124,7 +124,17 @@ repositories {
     flatDir {
     dir 'libs'
     }
+    maven {
+        url 'https://cursemaven.com'
+    }
 }
+
+mixin {
+    add sourceSets.main, "keybindjs.refmap.json"
+
+    config "keybindjs.mixins.json"
+}
+
 
 dependencies {
     // Specify the version of Minecraft to use.
@@ -145,30 +155,31 @@ dependencies {
 
     implementation fg.deobf("blank:rhino-forge:2001")
     implementation fg.deobf("blank:architectury-9.2.14:forge")
-    implementation fg.deobf("blank:geckolib-forge:1.20.1")
-    implementation fg.deobf("blank:Kiwi-1.20.1:Forge-11.8.30")
-    implementation fg.deobf("blank:mutil-1.20.1:6.1.1")
+    //implementation fg.deobf("blank:geckolib-forge:1.20.1")
+    //implementation fg.deobf("blank:Kiwi-1.20.1:Forge-11.8.30")
+    //implementation fg.deobf("blank:mutil-1.20.1:6.1.1")
 
-    implementation fg.deobf("blank:Lychee-1.20.1:Forge-5.1.17-all")
-    implementation fg.deobf("blank:integrated_api-1.5.1+1.20.1:forge")
-    implementation fg.deobf("blank:Loquat-1.20.1:forge-2.1.2")
+    //implementation fg.deobf("blank:Lychee-1.20.1:Forge-5.1.17-all")
+    //implementation fg.deobf("blank:integrated_api-1.5.1+1.20.1:forge")
+    //implementation fg.deobf("blank:Loquat-1.20.1:forge-2.1.2")
     implementation fg.deobf("blank:ModernUI-1.20.1:1")
     implementation fg.deobf("blank:kubejs-forge:2001")
-    implementation fg.deobf("blank:curios-forge:5.11.1+1.20.1")
-    implementation fg.deobf("blank:jei-1.20.1:forge-15.20.0.106")
-    implementation fg.deobf("blank:Jade-1.20.1:Forge-11.12.3")
-    implementation fg.deobf("blank:IBEEditor-1.20:2.2.8-forge")
-    implementation fg.deobf("blank:tetra-1.20.1:6.8.0")
+    //implementation fg.deobf("blank:curios-forge:5.11.1+1.20.1")
+    //implementation fg.deobf("blank:jei-1.20.1:forge-15.20.0.106")
+    //implementation fg.deobf("blank:Jade-1.20.1:Forge-11.12.3")
+    //implementation fg.deobf("blank:IBEEditor-1.20:2.2.8-forge")
+    //implementation fg.deobf("blank:tetra-1.20.1:6.8.0")
 
-    implementation fg.deobf("blank:RingsOfAscension-1.20.1:2.0.2")
-    implementation fg.deobf("blank:powerfuljs-1.20.1:1.6.1")
-    implementation fg.deobf("blank:probejs-7.0.0:forge")
-    implementation fg.deobf("blank:kubejsadditions-forge:4.3.3")
-    implementation fg.deobf("blank:entityjs-0.4.2:1.20.1")
-    implementation fg.deobf("blank:renderjs-forge:2001.2.1")
-    implementation fg.deobf("blank:morejs-1.20.1:0.10.0")
-    implementation fg.deobf("blank:EventJS-1.20.1:1.3.0")
-
+    //implementation fg.deobf("blank:RingsOfAscension-1.20.1:2.0.2")
+    //implementation fg.deobf("blank:powerfuljs-1.20.1:1.6.1")
+    //implementation fg.deobf("blank:probejs-7.0.0:forge")
+    //implementation fg.deobf("blank:kubejsadditions-forge:4.3.3")
+    //implementation fg.deobf("blank:entityjs-0.4.2:1.20.1")
+    //implementation fg.deobf("blank:renderjs-forge:2001.2.1")
+    //implementation fg.deobf("blank:morejs-1.20.1:0.10.0")
+    //implementation fg.deobf("blank:EventJS-1.20.1:1.3.0")
+    implementation fg.deobf("curse.maven:probejs-legacy-956446:6773935")
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     //使用 ./libs 中的 mod jar 和平面 dir 存储库的 mod 依赖项示例
     //这会映射到 ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     //搜索时忽略组 ID - 在本例中，它是 “空白”

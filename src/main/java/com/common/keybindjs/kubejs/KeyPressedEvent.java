@@ -1,11 +1,9 @@
 package com.common.keybindjs.kubejs;
 
 import com.common.keybindjs.KeyBindJS;
-import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import dev.latvian.mods.kubejs.client.ClientEventJS;
 import dev.latvian.mods.kubejs.event.EventHandler;
 import dev.latvian.mods.kubejs.script.ScriptType;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -15,11 +13,10 @@ import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
-import java.util.Set;
 
+@Deprecated
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = KeyBindJS.MODID)
 public class KeyPressedEvent extends ClientEventJS {
 

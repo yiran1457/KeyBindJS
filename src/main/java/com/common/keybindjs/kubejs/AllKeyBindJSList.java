@@ -7,6 +7,8 @@ import java.util.HashSet;
 
 public class AllKeyBindJSList {
     public static HashMap<String, KeyMapping> RegisterKeyMappings = new HashMap<>();
-    public static HashSet<String> RemoveKeySet = new HashSet<>();
-    public static HashSet<String> HideKeySet = new HashSet<>();
+    public static HashSet<KeyMapping> RemoveKeySet = new HashSet<>();
+    public static HashSet<KeyMapping> HideKeySet = new HashSet<>();
+    public static HashSet<KeyMapping> JoinKeySet = new HashSet<>();
+    public static HashSet<KeyMapping> ConsumeClickSet = new HashSet<>();
 }

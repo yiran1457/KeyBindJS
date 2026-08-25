@@ -1,5 +1,3 @@
 {
-  "itemGroup.keybindjs": "Example Mod Tab",
-  "block.keybindjs.example_block": "Example Block",
-  "item.keybindjs.example_item": "Example Item"
+  "keybindjs:keybindjs": "KeyBindJS"
 }
